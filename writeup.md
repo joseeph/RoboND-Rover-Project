@@ -38,7 +38,7 @@ You're reading it!
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
 
-Within the color_thresh() I've done some modification, I've added a input string `sample_type=''`, and a if else condition to read the input, so every time I pass in there strings: 'rock' 'obstacles' 'road' would return the threshed img I need. 
+Within the color_thresh() I've done some modification, I've added a input argument string `sample_type=''`, and a if else condition to read the input, so every time I pass in there strings: 'rock' 'obstacles' 'road' would return the threshed img I need. 
 
 ```
 def color_thresh(img, sample_type='',rgb_thresh=(160, 160, 160)):
@@ -168,6 +168,19 @@ def perception_step(Rover):
 ```
 
 #### 2. Launching in autonomous mode your rover can navigate and map autonomously.  Explain your results and how you might improve them in your writeup.  
+
+In my case I just fixed the preception and add a simple pick up logic:
+
+```
+if Rover.near_sample and not Rover.picking_up:
+        Rover.throttle = 0
+        Rover.brake = Rover.brake_set
+        Rover.steer = 0
+        if Rover.vel == 0 and Rover.near_sample:
+            Rover.send_pickup = True
+```
+
+try to figure out how to let rover run near the edge. Might try with adjust the Rover.nav_angle to pointing slightly to left, then the pick up code should work.
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
 
